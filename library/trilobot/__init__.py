@@ -163,7 +163,7 @@ class Trilobot():
         button: the ID of the button to read the state of
         Returns True for pressed, False for released
         """
-        if type(button) is not int:
+        if not isinstance(button, int):
             raise TypeError("button must be an integer")
 
         if button not in range(NUM_BUTTONS):
@@ -180,7 +180,7 @@ class Trilobot():
         button_led: the ID of the button LED to set the state of
         value: either True for on, False for off, or a number between 0.0 and 1.0
         """
-        if type(button_led) is not int:
+        if not isinstance(button_led, int):
             raise TypeError("led must be an integer")
 
         if button_led not in range(NUM_BUTTONS):
@@ -206,7 +206,7 @@ class Trilobot():
         motor: the ID of the motor to set the state of
         speed: the motor speed, between -1.0 and 1.0
         """
-        if type(motor) is not int:
+        if not isinstance(motor, int):
             raise TypeError("motor must be an integer")
 
         if motor not in range(2):
@@ -349,7 +349,7 @@ class Trilobot():
         b: the blue component of the color (from 0 to 255), if r_color was not given a list/tuple
         show: whether or not to show the new color immediately
         """
-        if type(light) is not int:
+        if not isinstance(light, int):
             raise TypeError("light must be an integer")
 
         if light not in range(NUM_UNDERLIGHTS):
@@ -454,7 +454,7 @@ class Trilobot():
         b: the blue component of the color (from 0 to 255), if r_color was not given a list/tuple
         show: whether or not to show the new color immediately
         """
-        if type(lights) != list and type(lights) != tuple:
+        if not isinstance(lights, (list, tuple)):
             raise TypeError("lights must be a list or tuple containing the numbers for the underlights to set (from 0 to 5)")
 
         light_count = len(lights)
