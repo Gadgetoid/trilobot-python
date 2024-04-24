@@ -148,6 +148,14 @@ class SimpleController():
         self.buttons = []
         self.axes = []
 
+    def axis_or_button_exists(self, collection, name):
+        if name is None:
+            return False
+        for item in collection:
+            if name in (item.name, item.alt_name):
+                return True
+        return False
+
     def register_button(self, name, ev_code, pressed_callback=None, released_callback=None, alt_name=None):
         """ Registers a button with this controller.
         Raises a ValueError if the button name is already used.
@@ -157,16 +165,11 @@ class SimpleController():
         released_callback: the function to call when a released event occurs
         alt_name: an alternative name to give the button (for where 'A' on one controller would be 'Cross' on another)
         """
-        for button in self.buttons:
-            if name == button.name:
-                raise ValueError("A button with the name '" + name + "' is already registered. Use a different name")
-            if name == button.alt_name:
-                raise ValueError("A button with the alt_name '" + name + "' is already registered. Use a different name")
-            if alt_name:
-                if alt_name == button.name:
-                    raise ValueError("A button with the name '" + alt_name + "' is already registered. Use a different alt_name")
-                if alt_name == button.alt_name:
-                    raise ValueError("A button with the alt_name '" + alt_name + "' is already registered. Use a different alt_name")
+        if self.axis_or_button_exists(self.buttons, name):
+            raise ValueError("A button with the name or alt_name '{}' is already registered. Use a different name".format(name))
+        if self.axis_or_button_exists(self.buttons, alt_name):
+            raise ValueError("A button with the name or alt_name '{}' is already registered. Use a different alt_name".format(alt_name))
+
         self.buttons.append(Button(name, alt_name, ev_code, ecodes.EV_KEY, 1, 0, pressed_callback, released_callback))
 
     def register_axis_as_button(self, name, ev_code, pressed_value=1, released_value=0, pressed_callback=None, released_callback=None, alt_name=None):
@@ -180,16 +183,11 @@ class SimpleController():
         released_callback: the function to call when a released event occurs
         alt_name: an alternative name to give the button (for where 'A' on one controller would be 'Cross' on another)
         """
-        for button in self.buttons:
-            if name == button.name:
-                raise ValueError("A button with the name '" + name + "' is already registered. Use a different name")
-            if name == button.alt_name:
-                raise ValueError("A button with the alt_name '" + name + "' is already registered. Use a different name")
-            if alt_name:
-                if alt_name == button.name:
-                    raise ValueError("A button with the name '" + alt_name + "' is already registered. Use a different alt_name")
-                if alt_name == button.alt_name:
-                    raise ValueError("A button with the alt_name '" + alt_name + "' is already registered. Use a different alt_name")
+        if self.axis_or_button_exists(self.buttons, name):
+            raise ValueError("A button with the name or alt_name '" + name + "' is already registered. Use a different name")
+        if self.axis_or_button_exists(self.buttons, alt_name):
+            raise ValueError("A button with the name or alt_name '" + alt_name + "' is already registered. Use a different alt_name")
+
         self.buttons.append(Button(name, alt_name, ev_code, ecodes.EV_ABS, pressed_value, released_value, pressed_callback, released_callback))
 
     def register_axis(self, name, ev_code, min_value=-1, max_value=1, deadzone_percent=0.0, changed_callback=None, alt_name=None):
@@ -203,16 +201,11 @@ class SimpleController():
         changed_callback: the function to call when a changed event occurs
         alt_name: an alternative name to give the axis (for where 'LT' on one controller would be 'L2' on another)
         """
-        for axis in self.axes:
-            if name == axis.name:
-                raise ValueError("An axis with the name '" + name + "' is already registered. Use a different name")
-            if name == axis.alt_name:
-                raise ValueError("An axis with the alt_name '" + name + "' is already registered. Use a different name")
-            if alt_name:
-                if alt_name == axis.name:
-                    raise ValueError("An axis with the name '" + alt_name + "' is already registered. Use a different alt_name")
-                if alt_name == axis.alt_name:
-                    raise ValueError("An axis with the alt_name '" + alt_name + "' is already registered. Use a different alt_name")
+        if self.axis_or_button_exists(self.axes, name):
+            raise ValueError("An axis with the name or alt_name '" + name + "' is already registered. Use a different name")
+        if self.axis_or_button_exists(self.axes, alt_name):
+            raise ValueError("An axis with the name or alt_name '" + alt_name + "' is already registered. Use a different alt_name")
+
         self.axes.append(Axis(name, alt_name, ev_code, min_value, max_value, -1.0, 1.0, deadzone_percent, changed_callback))
 
     def register_trigger_axis(self, name, ev_code, min_value=0, max_value=1, deadzone_percent=0.0, changed_callback=None, alt_name=None):
@@ -226,16 +219,11 @@ class SimpleController():
         changed_callback: the function to call when a changed event occurs
         alt_name: an alternative name to give the axis (for where 'LT' on one controller would be 'L2' on another)
         """
-        for axis in self.axes:
-            if name == axis.name:
-                raise ValueError("An axis with the name '" + name + "' is already registered. Use a different name")
-            if name == axis.alt_name:
-                raise ValueError("An axis with the alt_name '" + name + "' is already registered. Use a different name")
-            if alt_name:
-                if alt_name == axis.name:
-                    raise ValueError("An axis with the name '" + alt_name + "' is already registered. Use a different alt_name")
-                if alt_name == axis.alt_name:
-                    raise ValueError("An axis with the alt_name '" + alt_name + "' is already registered. Use a different alt_name")
+        if self.axis_or_button_exists(self.axes, name):
+            raise ValueError("An axis with the name or alt_name '" + name + "' is already registered. Use a different name")
+        if self.axis_or_button_exists(self.axes, alt_name):
+            raise ValueError("An axis with the name or alt_name '" + alt_name + "' is already registered. Use a different alt_name")
+
         self.axes.append(Axis(name, alt_name, ev_code, min_value, max_value, 0.0, 1.0, deadzone_percent, changed_callback))
 
     def assign_button_callbacks(self, name, pressed_callback, released_callback):
